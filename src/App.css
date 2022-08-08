@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css?family=Audiowide');
+
+.App {
+  background-color: #13151a;
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.photo-container {
+  height: 200px;
+  width: 400px;
+  position: relative;
+}
+
+.photo {
+  height: 100%;
+  width: 100%;
+}
+
+.delete-button {
+  margin: 5;
+  position: "absolute";
+  top: 0;
+  right: 0;
+  width: 25;
+  height: 25;
+  color: rgb(165, 0, 0);
+  background-color: rgb(255, 255, 255);
+}
+
+.delete {
+  display: none;
+  color: #fff;
+  background-color: #999;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 15px;
+  border-radius: 50%;
+  border: 2px solid #333;
+  z-index: 1;
+}
+.delete:hover{
+  display: block;
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.delete:hover + .photo {
+  opacity: 0.2;
+}
+
+.photo:hover + .delete {
+  display: block;
+}
+
+.photo:hover {
+  opacity: 0.5;
+  cursor:alias;
+}
+
+.grid {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(2, 400px);
+  grid-template-rows: repeat(2, 200px);
+  grid-gap: 15px;
+  padding-top: calc(10px + 2vmin);
+  padding-bottom: calc(10px + 2vmin);
+}
+
+.App-header {
+  background-color: #282c34;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Audiowide', sans-serif;
+  font-size: calc(10px + 2vmin);
+  padding-top: calc(10px + 2vmin);
+  padding-bottom: calc(10px + 2vmin);
+  color: white;
+}
+
+.stop-stream {
+  font-size: calc(2vmin);
+  color: rgb(255, 0, 0);
+  cursor: pointer;
+}
+
+.App-footer {
+  background-color: #282c34;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Audiowide', sans-serif;
+  font-size: calc(10px + 2vmin);
+  padding-top: calc(1vmin);
+  padding-bottom: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-cropper {
+  background-color: #282c34;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Audiowide', sans-serif;
+  font-size: calc(2px + 2vmin);
+  padding-top: calc(1vmin);
+  padding-bottom: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
