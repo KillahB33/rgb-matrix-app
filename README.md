@@ -25,14 +25,18 @@ services:
   rgbmatrix:
     image: rgbmatrix
     container_name: rgbmatrix
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Toronto
+      - SSH_host=<ip of pi rgbmatrix>
+      - SSH_user=<pi user>
+      - SSH_pass=<pi password>
+      - SSH_pipath=/home/dietpi/rpi-rgb-led-matrix #path on the pi where the library was cloned
     volumes:
-      - /opt/images:/app/public/images
+      - /opt/images:/app/public/images #path where images for ui are stored
     ports:
       - 3030:3030 #port for Node
       - 3031:3000 #port for React
     restart: unless-stopped
 ```
-
-## Build-Notes
-
-I was unable to get ssh.connect to work with env variables so they are currently hard coded, please make sure you fix that before building.
