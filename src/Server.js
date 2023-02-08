@@ -11,6 +11,8 @@ const {NodeSSH} = require('node-ssh')
 const ssh = new NodeSSH()
 const sharp = require('sharp');
 
+require('dotenv').config();
+
 const storage = multer.diskStorage({
    destination: function (req, file, callback) {
 	   callback(null, './public/images/temp/');
@@ -28,12 +30,12 @@ var upload = multer({ storage: storage });
 function uploadImage(outputName) {
 	ssh
 	.connect({
-		host: 'pihost',
-		username: 'pi',
-		password: 'password'
+		host: process.env.SSH_host,
+		username: process.env.SSH_user,
+		password: process.env.SSH_pass
 	})
 	.then(() => {
-		ssh.putFile('/app/public/images/'+outputName, '/home/pi/git/rpi-rgb-led-matrix/images/'+outputName).then(function() {
+		ssh.putFile('/app/public/images/'+outputName, process.env.SSH_pipath+'/images/'+outputName).then(function() {
 			console.log("Upload successful");
 		  }, function(error) {
 			console.log("Something's wrong")
@@ -103,17 +105,20 @@ app.post('/setImage', async (req, res) => {
 		var fileName = req.body.image;
 		res.send('Set Image to: '+ fileName);
 		var stopImage = 'pidof led-image-viewer | xargs sudo kill -9 |';
-		setImage = 'sudo /home/pi/git/rpi-rgb-led-matrix/utils/led-image-viewer  --led-cols=64 --led-rows=64 --led-chain=2 --led-gpio-mapping=adafruit-hat-pwm --led-brightness=60 /home/pi/git/rpi-rgb-led-matrix/'+fileName;
+		setImage = 'sudo '+process.env.SSH_pipath+'/utils/led-image-viewer  --led-cols=64 --led-rows=64 --led-chain=2 --led-gpio-mapping=adafruit-hat-pwm --led-brightness=60 '+process.env.SSH_pipath+'/'+fileName;
 		ssh
 		.connect({
-			host: 'pihost',
-			username: 'pi',
-			password: 'password'
+			host: process.env.SSH_host,
+			username: process.env.SSH_user,
+			password: process.env.SSH_pass
 		})
 		.then(() => {
 			ssh.execCommand(stopImage+setImage).then((result) => {
 				console.log('STDOUT: ' + result.stdout);
 				console.log('STDERR: ' + result.stderr);
+			}, function(error) {
+				console.log("Something's wrong")
+				console.log(error)
 			});
 		});
 	}
@@ -131,9 +136,9 @@ app.post('/endStream', async (req, res) => {
 		var stopImage = 'pidof led-image-viewer | xargs sudo kill -9';
 		ssh
 		.connect({
-			host: 'pihost',
-			username: 'pi',
-			password: 'password'
+			host: process.env.SSH_host,
+			username: process.env.SSH_user,
+			password: process.env.SSH_pass
 		})
 		.then(() => {
 			ssh.execCommand(stopImage).then((result) => {
@@ -161,13 +166,13 @@ app.post('/deleteImage', async (req, res) => {
 			}
 			console.log("File is deleted.");
 		});
-		res.send('Set Image to: '+ fileName);
-		deleteImage = 'rm /home/pi/git/rpi-rgb-led-matrix/'+fileName;
+		res.send('Deleted following image: '+ fileName);
+		deleteImage = 'rm '+process.env.SSH_pipath+'/'+fileName;
 		ssh
 		.connect({
-			host: 'pihost',
-			username: 'pi',
-			password: 'password'
+			host: process.env.SSH_host,
+			username: process.env.SSH_user,
+			password: process.env.SSH_pass
 		})
 		.then(() => {
 			ssh.execCommand(deleteImage).then((result) => {
