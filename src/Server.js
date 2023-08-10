@@ -85,8 +85,8 @@ app.post('/upload', upload.single('myImage'), async (req, res) => {
 					uploadImage(outputName);
 				})
 			}
-
-		   res.status(200).send(fileName);
+			res.setHeader('Content-Type', 'application/json');
+		   	res.status(200).send(fileName);
 	   }
 });
 
@@ -103,6 +103,7 @@ app.post('/setImage', async (req, res) => {
 	} else {
 		console.log(reqBody.image);
 		var fileName = req.body.image;
+		res.setHeader('Content-Type', 'application/json');
 		res.send('Set Image to: '+ fileName);
 		var stopImage = 'pidof led-image-viewer | xargs sudo kill -9 |';
 		setImage = 'sudo '+process.env.SSH_pipath+'/utils/led-image-viewer  --led-cols=64 --led-rows=64 --led-chain=2 --led-gpio-mapping=adafruit-hat-pwm --led-brightness=60 '+process.env.SSH_pipath+'/'+fileName;
@@ -160,26 +161,32 @@ app.post('/deleteImage', async (req, res) => {
 	} else {
 		console.log(reqBody.image);
 		var fileName = req.body.image;
-		fs.unlink('./public/'+fileName, (err) => {
-			if (err) {
-				throw err;
-			}
-			console.log("File is deleted.");
-		});
-		res.send('Deleted following image: '+ fileName);
-		deleteImage = 'rm '+process.env.SSH_pipath+'/'+fileName;
-		ssh
-		.connect({
-			host: process.env.SSH_host,
-			username: process.env.SSH_user,
-			password: process.env.SSH_pass
-		})
-		.then(() => {
-			ssh.execCommand(deleteImage).then((result) => {
-				console.log('STDOUT: ' + result.stdout);
-				console.log('STDERR: ' + result.stderr);
+		if (!fileName.includes("..")){
+			fs.unlink('./public/'+fileName, (err) => {
+				if (err) {
+					throw err;
+				}
+				console.log("File is deleted.");
 			});
-		});
+			res.setHeader('Content-Type', 'application/json');
+			res.send('Deleted following image: '+ fileName);
+			deleteImage = 'rm '+process.env.SSH_pipath+'/'+fileName;
+			ssh
+			.connect({
+				host: process.env.SSH_host,
+				username: process.env.SSH_user,
+				password: process.env.SSH_pass
+			})
+			.then(() => {
+				ssh.execCommand(deleteImage).then((result) => {
+					console.log('STDOUT: ' + result.stdout);
+					console.log('STDERR: ' + result.stderr);
+				});
+			});
+		} else {
+			res.setHeader('Content-Type', 'application/json');
+			res.send('You naughty naughty!');
+		}
 	}
 });
 
