@@ -1,4 +1,4 @@
-FROM node:16-bullseye-slim
+FROM node:20.4-bookworm-slim
 USER root
 
 ADD . /app
