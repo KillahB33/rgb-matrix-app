@@ -16,6 +16,8 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag ghcr.io/killahb33/rgb-matrix-app:$(date +%Y%m%d) --tag ghcr.io/killahb33/rgb-matrix-app:latest
+    - name: Login to GitHub Container Registry
+      run: echo "${{ secrets.CR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
     - name: Push Docker image
       run: |
         docker push ghcr.io/killahb33/rgb-matrix-app:latest
