@@ -190,6 +190,11 @@ app.post('/deleteImage', async (req, res) => {
 	}
 });
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+	res.status(200).json({ status: 'ok' });
+});
+
 //pre-flight requests
 app.options('*', function(req, res) {
 	res.sendStatus(200);
