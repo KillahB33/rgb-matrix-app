@@ -39,4 +39,9 @@ services:
       - 3030:3030 #port for Node
       - 3031:3000 #port for React
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:3030/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 ```
