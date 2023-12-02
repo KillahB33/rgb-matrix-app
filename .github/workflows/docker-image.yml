@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag rgb-matrix-app:$(date +%Y%m%d) --tag rgb-matrix-app:latest
+      run: docker build . --file Dockerfile --tag ghcr.io/rgb-matrix-app:$(date +%Y%m%d) --tag ghcr.io/rgb-matrix-app:latest
     - name: Push Docker image
       run: |
         docker push ghcr.io/killahb33/rgb-matrix-app:latest
