@@ -18,5 +18,5 @@ jobs:
       run: docker build . --file Dockerfile --tag rgb-matrix-app:$(date +%Y%m%d) --tag rgb-matrix-app:latest
     - name: Push Docker image
       run: |
-        docker push ghcr.io/${{ github.repository_owner }}/rgb-matrix-app:latest
-        docker push ghcr.io/${{ github.repository_owner }}/rgb-matrix-app:$(date +%Y%m%d)
+        docker push ghcr.io/killahb33/rgb-matrix-app:latest
+        docker push ghcr.io/killahb33/rgb-matrix-app:$(date +%Y%m%d)
