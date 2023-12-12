@@ -3,7 +3,8 @@ var http = require("http");
 var options = {  
     host : "localhost",
     port : "3030",
-    timeout : 2000
+    timeout : 2000,
+    path: "/health"
 };
 
 var request = http.request(options, (res) => {  
