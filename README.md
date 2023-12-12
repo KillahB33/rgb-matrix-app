@@ -40,7 +40,7 @@ services:
       - 3031:3000 #port for React
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "node /app/src/healthcheck.js"]
+      test: ["CMD", "node", "/app/src/healthcheck.js"]
       interval: 12s
       timeout: 12s
       start_period: 30s
