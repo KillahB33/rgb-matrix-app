@@ -1,4 +1,4 @@
-FROM node:20.4-bookworm-slim
+FROM node:20.11.1-bookworm-slim
 USER root
 
 ADD . /app
